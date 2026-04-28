@@ -82,10 +82,13 @@ function SessionRow({
   deleting: boolean;
 }) {
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onSelect}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(); } }}
       className={[
-        'w-full text-left px-4 py-3 border-b border-border transition-colors',
+        'w-full text-left px-4 py-3 border-b border-border transition-colors cursor-pointer',
         selected ? 'bg-primary/10' : 'hover:bg-accent',
         deleting ? 'opacity-40 pointer-events-none' : '',
       ].join(' ')}
@@ -102,11 +105,11 @@ function SessionRow({
             <p className="text-xs text-muted-foreground italic">No summary</p>
           )}
         </div>
-        <div className="shrink-0 pt-0.5">
+        <div className="shrink-0 pt-0.5" onClick={(e) => e.stopPropagation()}>
           <DeleteButton onConfirm={onDelete} disabled={deleting} />
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 

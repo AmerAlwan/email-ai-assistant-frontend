@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import pg from 'pg';
 import neo4j from 'neo4j-driver';
+import { QdrantClient } from '@qdrant/js-client-rest';
+
+const EMAILS_COLLECTION = 'emails';
 
 function getPgClient() {
   return new pg.Client({ connectionString: process.env.POSTGRES_URL });
@@ -11,6 +14,10 @@ function getNeo4jDriver() {
     process.env.NEO4J_URI!,
     neo4j.auth.basic(process.env.NEO4J_USER!, process.env.NEO4J_PASSWORD!),
   );
+}
+
+function getQdrant() {
+  return new QdrantClient({ url: process.env.QDRANT_URL });
 }
 
 export const revalidate = 0;
@@ -40,12 +47,32 @@ export async function POST() {
       );
     }
 
-    // 2. Delete all emails where from_addr matches the user email
+    // 2. Delete all emails where from_addr matches the user email (Postgres)
     const del = await pgClient.query(
       'DELETE FROM emails WHERE from_addr = $1',
       [userEmail],
     );
-    return NextResponse.json({ deleted: del.rowCount, userEmail });
+
+    // 3. Delete matching points from Qdrant by sender field
+    let qdrantDeleted = 0;
+    try {
+      const qdrant = getQdrant();
+      const collections = await qdrant.getCollections();
+      const exists = collections.collections.some((c) => c.name === EMAILS_COLLECTION);
+      if (exists) {
+        await qdrant.delete(EMAILS_COLLECTION, {
+          filter: {
+            must: [{ key: 'sender', match: { value: userEmail } }],
+          },
+        });
+        qdrantDeleted = del.rowCount ?? 0;
+      }
+    } catch (qdrantErr) {
+      const message = qdrantErr instanceof Error ? qdrantErr.message : String(qdrantErr);
+      return NextResponse.json({ deleted: del.rowCount, userEmail, qdrant_error: message });
+    }
+
+    return NextResponse.json({ deleted: del.rowCount, userEmail, qdrant_deleted: qdrantDeleted });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: message }, { status: 500 });
