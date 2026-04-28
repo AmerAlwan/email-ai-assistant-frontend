@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 // ── Tool definitions ───────────────────────────────────────────────────────────
 
-type ParamType = 'string' | 'boolean';
+type ParamType = 'string' | 'boolean' | 'array';
 
 interface ParamDef {
   name: string;
@@ -29,6 +29,7 @@ const TOOLS: ToolDef[] = [
     params: [
       { name: 'query', type: 'string', required: true, placeholder: 'Q2 roadmap', description: 'Topic or keywords to search for' },
       { name: 'sender', type: 'string', required: false, placeholder: 'alice@example.com', description: 'Filter by exact sender address' },
+      { name: 'to', type: 'array', required: false, placeholder: 'bob@example.com, carol@example.com', description: 'Filter by recipient addresses (comma-separated, converted to list)' },
       { name: 'date_from', type: 'string', required: false, placeholder: '2026-04-01', description: 'Start date (ISO)' },
       { name: 'date_to', type: 'string', required: false, placeholder: '2026-04-30', description: 'End date (ISO)' },
     ],
@@ -107,6 +108,13 @@ export function ToolsTab() {
       const val = values[p.name];
       if (p.type === 'boolean') {
         if (val === true) params[p.name] = true;
+      } else if (p.type === 'array') {
+        const s = (val as string | undefined) ?? '';
+        if (s.trim() !== '') {
+          params[p.name] = s.split(',').map((v) => v.trim()).filter(Boolean);
+        } else if (p.required) {
+          params[p.name] = [];
+        }
       } else {
         const s = (val as string | undefined) ?? '';
         if (s.trim() !== '' || p.required) params[p.name] = s.trim();
@@ -193,6 +201,9 @@ export function ToolsTab() {
                     onChange={(e) => setValues((v) => ({ ...v, [p.name]: e.target.value }))}
                     className="w-full rounded border border-border bg-background px-3 py-1.5 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
                   />
+                )}
+                {p.type === 'array' && (
+                  <p className="text-[10px] text-muted-foreground/60">Comma-separated values are converted to a list</p>
                 )}
               </div>
             ))}
