@@ -1,0 +1,53 @@
+Session ID: session-test-001
+Date: 2026-04-27
+User: me@demo.local
+
+---
+
+[00:00:12] User: Hey, I need to follow up on the project with Acme Corp. Can you check my emails from Sarah Chen?
+
+[00:00:18] Agent: Sure! I found 3 emails from Sarah Chen at Acme Corp. The most recent one from April 25th is about the Q2 product roadmap review. She wants to schedule a kickoff meeting before May 10th. There's also an invoice for $24,500 from their billing department that's due on April 30th.
+
+[00:00:35] User: Ok remind me about that invoice. Who do I pay it to?
+
+[00:00:40] Agent: The invoice is from Acme Corp, billed to you personally. It's for "Platform Integration Services - Phase 1". The contact is Mark Liu in their finance department. His email is mark.liu@acmecorp.com. The invoice number is INV-2026-0441.
+
+[00:01:02] User: Great. And what's the status of the Denver office expansion? I think James Powell was handling that.
+
+[00:01:10] Agent: I found a thread with James Powell. He's the VP of Operations at your company, GlobalTech Solutions. According to the last email from March 15th, the Denver office lease was signed with Westfield Properties. Move-in is scheduled for June 1st. James mentioned they're still waiting on the building permit from the City of Denver.
+
+[00:01:38] User: Got it. Can you search my memory for anything about my preference on meeting times?
+
+[00:01:44] Agent: Based on your preferences, you prefer meetings after 10 AM Mountain Time and no meetings on Fridays. You also mentioned preferring video calls over phone calls.
+
+[00:01:58] User: Right. Also add that I don't like back-to-back meetings. I need at least 15 minutes between them.
+
+[00:02:05] Agent: Got it, I'll remember that — you need at least 15 minutes between meetings.
+
+[00:02:20] User: What do we know about Sarah Chen specifically?
+
+[00:02:26] Agent: Sarah Chen is the Head of Product at Acme Corp. She's based in San Francisco. You've exchanged 12 emails with her over the last 3 months, mostly about the platform integration project and roadmap planning. She was previously at TechNova Inc before joining Acme Corp last year.
+
+[00:02:55] User: Interesting. Can you look up the platform integration project details?
+
+[00:03:02] Agent: The Platform Integration Project is a joint effort between GlobalTech Solutions and Acme Corp. It started in January 2026. Key milestones: Phase 1 (API integration) was completed in March, Phase 2 (data migration) is currently in progress with a deadline of May 31st. The project budget is $120,000. You are the project lead on the GlobalTech side, and Sarah Chen is the lead on the Acme side.
+
+[00:03:40] User: What tools did you use just now?
+
+[00:03:44] Agent: I used the search_emails tool to find the emails from Sarah Chen, then get_graph_context to pull the project details from the knowledge graph, and search_memory to retrieve your preferences.
+
+[00:04:01] User: Ok, please draft a reply to Sarah's latest email accepting the kickoff meeting and suggesting May 7th at 2 PM Mountain Time.
+
+[00:04:10] Agent: Draft ready. Subject: "Re: Q2 Product Roadmap Review - Kickoff Meeting". The email confirms May 7th at 2 PM Mountain Time, mentions you've reviewed the roadmap, and asks Sarah to send a calendar invite to the team including James Powell and Mark Liu.
+
+[00:04:45] User: Perfect, send it.
+
+[00:04:47] Agent: Email sent to sarah.chen@acmecorp.com.
+
+[00:05:10] User: One more thing — I'm considering switching our cloud provider from AWS to Google Cloud by end of Q3. Can you note that down?
+
+[00:05:18] Agent: Noted. I'll keep that in mind for future context.
+
+[00:05:30] User: Thanks, that's all for now.
+
+[00:05:33] Agent: Great session! To recap: I found the Acme Corp invoice (INV-2026-0441, due April 30th), confirmed the Denver office expansion status, and sent your reply to Sarah Chen about the May 7th kickoff. I also noted your preference for 15 minutes between meetings and the potential cloud migration plan.

@@ -180,6 +180,29 @@ export function AgentSessionView_01({
   const [chatOpen, setChatOpen] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { state: agentState } = useAgent();
+  const messagesRef = useRef(messages);
+  useEffect(() => { if (messages.length > 0) messagesRef.current = messages; }, [messages]);
+
+  const sessionIdRef = useRef<string>(`session_${Date.now()}`);
+
+  useEffect(() => {
+    if (session.connectionState === 'disconnected' && messagesRef.current.length > 0) {
+      const transcript = messagesRef.current
+        .map((m) => `${m.from?.isLocal ? 'User' : 'Agent'}: ${m.message}`)
+        .join('\n');
+
+      console.log('[Session transcript]\n' + transcript);
+
+      fetch('/api/ingest-transcript', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transcript, sessionId: sessionIdRef.current }),
+      })
+        .then((r) => r.json())
+        .then((result) => console.log('[Ingestion complete]', result))
+        .catch((err) => console.error('[Ingestion failed]', err));
+    }
+  }, [session.connectionState]);
 
   const controls: AgentControlBarControls = {
     leave: true,
