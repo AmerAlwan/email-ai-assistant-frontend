@@ -34,7 +34,7 @@ User: me@demo.local
 
 [00:03:40] User: What tools did you use just now?
 
-[00:03:44] Agent: I used the search_emails tool to find the emails from Sarah Chen, then get_graph_context to pull the project details from the knowledge graph, and search_memory to retrieve your preferences.
+[00:03:44] Agent: I used the search_emails tool to find the emails from Sarah Chen, then search_entities to pull the project details from the knowledge graph, and search_events to retrieve your preferences.
 
 [00:04:01] User: Ok, please draft a reply to Sarah's latest email accepting the kickoff meeting and suggesting May 7th at 2 PM Mountain Time.
 
