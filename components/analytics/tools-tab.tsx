@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 // ── Tool definitions ───────────────────────────────────────────────────────────
 
-type ParamType = 'string' | 'boolean' | 'array';
+type ParamType = 'string' | 'number' | 'boolean' | 'array';
 
 interface ParamDef {
   name: string;
@@ -78,6 +78,25 @@ const TOOLS: ToolDef[] = [
       { name: 'session_id', type: 'string', required: true, placeholder: 'session_1745123456789', description: 'Session ID' },
     ],
   },
+  {
+    name: 'get_recent_emails',
+    label: 'get_recent_emails',
+    description: 'Fetch the most recent emails received by the user, ordered newest first.',
+    params: [
+      { name: 'num_emails', type: 'number', required: false, placeholder: '10', description: 'Number of emails to return (1–50, default 10)' },
+    ],
+  },
+  {
+    name: 'get_date',
+    label: 'get_date',
+    description: 'Return a date relative to the simulated current date (most recent email + 1 day). All offsets default to 0.',
+    params: [
+      { name: 'day_offset', type: 'number', required: false, placeholder: '0', description: 'Days to add (negative for past, e.g. -1 = yesterday)' },
+      { name: 'week_offset', type: 'number', required: false, placeholder: '0', description: 'Weeks to add (negative for past, e.g. -1 = last week)' },
+      { name: 'month_offset', type: 'number', required: false, placeholder: '0', description: 'Months to add (negative for past, e.g. -1 = last month)' },
+      { name: 'year_offset', type: 'number', required: false, placeholder: '0', description: 'Years to add (negative for past, e.g. -1 = last year)' },
+    ],
+  },
 ];
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -108,6 +127,12 @@ export function ToolsTab() {
       const val = values[p.name];
       if (p.type === 'boolean') {
         if (val === true) params[p.name] = true;
+      } else if (p.type === 'number') {
+        const s = (val as string | undefined) ?? '';
+        if (s.trim() !== '') {
+          const n = parseInt(s.trim(), 10);
+          if (!isNaN(n)) params[p.name] = n;
+        }
       } else if (p.type === 'array') {
         const s = (val as string | undefined) ?? '';
         if (s.trim() !== '') {
